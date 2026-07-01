@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const STR_FORMAT = "```ansi\n\x1b[1;30;47m → %\x1b[0m\n```";
-
 const {
     Client,
     GatewayIntentBits,
@@ -17,7 +15,7 @@ const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = "1521981883188117565";
 const GUILD_ID = "1236468650568056882";
 
-const API_URL = "https://test-hook-production.up.railway.app/global-message";
+const API_URL = "https://test-hook-n0mi.onrender.com/global-message";
 
 // IMPORTANT: correct v14 intents
 const client = new Client({
