@@ -1,7 +1,8 @@
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require("discord.js");
 const axios = require("axios");
+require("dotenv").config();
 
-const TOKEN = "MTUyMTk4MTg4MzE4ODExNzU2NQ.G8p44s.KxP5X--AZjqtfWp-nEUgD-8ERqw0VhCckBqG2w";
+const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = "1521981883188117565";
 const GUILD_ID = "1236468650568056882";
 
