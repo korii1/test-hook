@@ -64,10 +64,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
             headers: { "Content-Type": "text/plain" }
         });
 
-        await interaction.editReply("```ansi\n[0; 37; 45m☑️ sent global announcement to roblox\n```");
+        await interaction.editReply(
+            "```ansi\n\x1b[0;37;45m☑ Sent global announcement to Roblox\x1b[0m\n```"
+        );
     } catch (err) {
         console.error(err);
-        await interaction.editReply("```ansi\n[1; 31; 40m❌ could not send global announcement\n```");
+        await interaction.editReply(
+            "```ansi\n\x1b[1;31;40m❌ Could not send global announcement\x1b[0m\n```"
+        );
     }
 });
 
