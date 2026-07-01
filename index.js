@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+app.use(express.text());
 const PORT = process.env.PORT || 3000;
 
 let announcements = [];
@@ -40,10 +40,11 @@ app.get("/global-message", (req, res) => {
     );
 });
 app.post("/global-message", (req, res) => {
-    if (!req)
+    const msg = req.body;
+    if (!msg || msg.trim()==="")
         return res.status(400).json({ error: "Missing message" });
-    
-    addAnnouncement(message);
+
+    addAnnouncement(msg);
 });
 
 //
