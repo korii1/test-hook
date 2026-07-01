@@ -66,10 +66,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
             headers: { "Content-Type": "text/plain" }
         });
 
-        await interaction.editReply(STR_FORMAT.replace("%", "✅ Sent to Roblox!"));
+        await interaction.editReply("```ansi\n[0; 37; 45m☑️ sent global announcement to roblox\n```");
     } catch (err) {
         console.error(err);
-        await interaction.editReply(STR_FORMAT.replace('%', "❌ Failed to send announcement."));
+        await interaction.editReply("```ansi\n[1; 31; 40m❌ could not send global announcement\n```");
     }
 });
 
