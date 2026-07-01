@@ -1,6 +1,15 @@
-const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require("discord.js");
-const axios = require("axios");
 require("dotenv").config();
+
+const {
+    Client,
+    GatewayIntentBits,
+    REST,
+    Routes,
+    SlashCommandBuilder,
+    Events
+} = require("discord.js");
+
+const axios = require("axios");
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = "1521981883188117565";
@@ -8,23 +17,23 @@ const GUILD_ID = "1236468650568056882";
 
 const API_URL = "https://test-hook-production.up.railway.app/global-message";
 
+// IMPORTANT: correct v14 intents
 const client = new Client({
     intents: [GatewayIntentBits.Guilds]
 });
 
-// slash command
+// register slash command
 const commands = [
     new SlashCommandBuilder()
         .setName("announcement")
         .setDescription("Send a global announcement to Roblox")
         .addStringOption(option =>
             option.setName("message")
-                .setDescription("The announcement message")
+                .setDescription("message")
                 .setRequired(true)
         )
 ].map(cmd => cmd.toJSON());
 
-// register command
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
 (async () => {
@@ -35,24 +44,30 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
     console.log("Slash command registered.");
 })();
 
-client.on("interactionCreate", async (interaction) => {
+// READY
+client.once(Events.ClientReady, () => {
+    console.log(`Logged in as ${client.user.tag}`);
+});
+
+// INTERACTION
+client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.commandName === "announcement") {
-        const msg = interaction.options.getString("message");
+    if (interaction.commandName !== "announcement") return;
 
-        try {
-            await axios.post(API_URL, msg, {
-                headers: {
-                    "Content-Type": "text/plain"
-                }
-            });
+    const msg = interaction.options.getString("message");
 
-            await interaction.reply("✅ Announcement sent to Roblox!");
-        } catch (err) {
-            console.error(err);
-            await interaction.reply("❌ Failed to send announcement.");
-        }
+    await interaction.deferReply(); // IMPORTANT: prevents timeout
+
+    try {
+        await axios.post(API_URL, msg, {
+            headers: { "Content-Type": "text/plain" }
+        });
+
+        await interaction.editReply("✅ Sent to Roblox!");
+    } catch (err) {
+        console.error(err);
+        await interaction.editReply("❌ Failed to send announcement.");
     }
 });
 
