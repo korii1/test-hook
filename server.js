@@ -41,7 +41,7 @@ app.get("/global-message", (req, res) => {
 });
 app.post("/global-message", (req, res) => {
     const msg = req.body;
-    if (!msg || msg.trim()==="")
+    if (!msg || msg.trim() === "")
         return res.status(400).json({ error: "Missing message" });
 
     addAnnouncement(msg);
