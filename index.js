@@ -33,7 +33,13 @@ app.get("/", (req, res) => {
 // GLOBAL MESSAGE
 app.get("/global-message", (req, res) => {
     cleanup();
-    res.json(announcements);
+
+    res.json(
+        announcements.map(a => ({
+            id: a.id,
+            message: a.message
+        }))
+    );
 });
 
 //
