@@ -23,8 +23,6 @@ setInterval(() => {
     announcements = announcements.filter(a => a.expiresAt > Date.now());
 }, 30 * 1000);
 
-addAnnouncement("TEST ANNOUNCEMENT");
-
 // PING
 app.get("/", (req, res) => {
     res.send("Hello World");
@@ -40,6 +38,12 @@ app.get("/global-message", (req, res) => {
             message: a.message
         }))
     );
+});
+app.post("/global-message", (req, res) => {
+    if (!req)
+        return res.status(400).json({ error: "Missing message" });
+    
+    addAnnouncement(message);
 });
 
 //
