@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const STR_FORMAT = "```ansi\n\x1b[1;30;47m → %\x1b[0m\n```";
+
 const {
     Client,
     GatewayIntentBits,
@@ -64,11 +66,25 @@ client.on(Events.InteractionCreate, async (interaction) => {
             headers: { "Content-Type": "text/plain" }
         });
 
-        await interaction.editReply("✅ Sent to Roblox!");
+        await interaction.editReply(STR_FORMAT.replace("%", "✅ Sent to Roblox!"));
     } catch (err) {
         console.error(err);
-        await interaction.editReply("❌ Failed to send announcement.");
+        await interaction.editReply(STR_FORMAT.replace('%', "❌ Failed to send announcement."));
     }
 });
 
 client.login(TOKEN);
+
+const br = `
+`;
+process.stdin.setEncoding("utf8");
+process.stdin.on("data", async (input) => {
+    const msg = input.toString(); // IMPORTANT
+
+    if (!msg.startsWith("send ")) return;
+
+    let text = msg.slice(5).replaceAll("//", br);
+
+    const channel = await client.channels.fetch("1236472165012996177");
+    channel.send(text);
+});
